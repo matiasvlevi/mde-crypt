@@ -3,19 +3,6 @@ const { Matrix } = require('dannjs');
 const { to_buffer } = require('./utils.js');
 const { ALPHA, CHARS, to_ascii } = require('./alpha.js');
 
-Matrix.mapMul = function (kernel, b, r, c, N, M) {
-  let ans = new Matrix(N, b.cols);
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < b.cols; j++) {
-      let sum = 0;
-      for (let k = 0; k < M; k++) {
-        sum += kernel.matrix[i % r][k % c] * b.matrix[k][j];
-      }
-      ans.matrix[i][j] = sum;
-    }
-  }
-  return ans;
-}
 
 function to_square_m(data, N) {
 

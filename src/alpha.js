@@ -29,7 +29,7 @@ function to_ascii(matrix) {
   let text = "";
   matrix.matrix.forEach((row) => {
     row.forEach((char) => {
-      if (Math.round(char) >= ALPHA.length || Math.round(char) <= 0) {
+      if (Math.round(char) >= ALPHA.length || Math.round(char) < 0) {
         text += ALPHA[Math.abs(Math.round(char) % ALPHA.length)];
 
       if (ALPHA[Math.round(char)] === undefined) console.log(Math.round(char), char, Math.abs(Math.round(char) % 255))
