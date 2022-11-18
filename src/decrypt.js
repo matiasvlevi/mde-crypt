@@ -10,17 +10,22 @@ module.exports = function MDE_Decrypt(buf_data, key, key_size = 3) {
   let data = from_buffer(buf_data);
 
   let seg_count = Math.ceil(data.length / (key_size * key_size));
-
   let data_matrices = [];
 
-  for (let i = 0; i < seg_count; i++) {
+  for (let i = 0; i < data.length; i+=(key_size * key_size)) {
     let data_matrix = new Matrix(key_size, key_size);
+    let end_index = i + (key_size * key_size);
     data_matrix.set(
-      to_square_m(data.slice(i, i+(key_size*key_size)), key_size).matrix
+      to_square_m(data.slice(
+        i, (end_index >= data.length) ? 
+          data.length :
+          end_index
+      ), key_size).matrix
     );
 
     data_matrices.push(data_matrix);
   }
+
 
   let key_ = [];
   for (let i = 0; i < key_size; i++) {
@@ -37,7 +42,7 @@ module.exports = function MDE_Decrypt(buf_data, key, key_size = 3) {
 
   for (let i = 0; i < seg_count; i++) {
     let m = 
-      Matrix.mult(key_matrix, data_matrices[i]);
+      Matrix.mult(data_matrices[i], key_matrix);
 
     let data_arr = [];
     m.matrix.forEach(r => {
@@ -46,7 +51,6 @@ module.exports = function MDE_Decrypt(buf_data, key, key_size = 3) {
       })
     })
 
-    console.log(data_arr);
     out_matrices.push(
       data_arr
     );

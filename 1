@@ -9,6 +9,7 @@ Matrix.mapMul = function (kernel, b, r, c, N, M) {
     for (let j = 0; j < b.cols; j++) {
       let sum = 0;
       for (let k = 0; k < M; k++) {
+        console.log(k, j)
         sum += kernel.matrix[i % r][k % c] * b.matrix[k][j];
       }
       ans.matrix[i][j] = sum;
@@ -18,6 +19,7 @@ Matrix.mapMul = function (kernel, b, r, c, N, M) {
 }
 
 function to_square_m(data, N) {
+  console.log(data)
 
   if (data.length > N*N) {
     console.log("Wrong dimension array");
@@ -27,6 +29,7 @@ function to_square_m(data, N) {
   let ans = new Matrix(N, N);
   for (let i = 0; i < N; i++) {
     for (let j = 0; j < N; j++) {
+      console.log(i, j, data[i * N + j]);
       if (i * N + j >= data.length) {
           ans.matrix[i][j] = 0;
       } else {
@@ -62,21 +65,23 @@ function MDE_Encrypt(data, key_size = 3) {
     data_matrix.set(
       to_square_m(data_vector.slice(
         i, (end_index >= data_vector.length) ? 
-          data_vector.length :
+          data_vector.length-1 :
           end_index
       ), key_size).matrix
     );
 
     data_matrices.push(data_matrix);
   }
+  data_matrices.forEach(x => console.log(x));
 
   let key_matrix = new Matrix(key_size, key_size);  
   key_matrix.set(key);
+  key_matrix.log();
 
   let enc_matrices = [];
   for (let i = 0; i < seg_count; i++) {
     enc_matrices.push(
-     Matrix.mult(data_matrices[i], key_matrix).matrix
+      Matrix.mult(key_matrix, data_matrices[i]).matrix
     );
   }
 
@@ -84,11 +89,14 @@ function MDE_Encrypt(data, key_size = 3) {
 
   enc_matrices.forEach(enc => {
     enc.forEach(row => {
+      console.log(row)
       row.forEach(char => {
+        console.log(char)
         enc_data.push(char);
       });
     });
   }) 
+  console.log('ENC DATA', enc_data);
 
   return {
     enc: to_buffer(enc_data),
