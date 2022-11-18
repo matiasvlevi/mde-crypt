@@ -10,6 +10,21 @@ const ALPHA = getRangeAscii(65, 90) +
               getRangeAscii(48, 57) + CHARS;
 
 
+
+function arr_to_ascii(arr) {
+  let text = "";
+
+  arr.forEach((char) => {
+     
+    if (ALPHA[Math.round(char)] !== undefined && Math.round(char) !== 0) {
+      text += ALPHA[Math.round(char)];
+    }
+
+  });
+
+  return text;
+}
+
 function to_ascii(matrix) {
   let text = "";
   matrix.matrix.forEach((row) => {
@@ -28,4 +43,4 @@ function to_ascii(matrix) {
   return text;
 }
 
-module.exports = { ALPHA, CHARS, to_ascii };
+module.exports = { ALPHA, CHARS, to_ascii, arr_to_ascii };

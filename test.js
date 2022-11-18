@@ -1,10 +1,6 @@
 
 const { MDE_Encrypt, MDE_Decrypt } = require('./src/index.js');
 
-let data = MDE_Encrypt("HELLO WORLD");
-
+let data = MDE_Encrypt(process.argv[2] || "Hello");
 console.log(data);
-
-let dec = MDE_Decrypt(data.enc, data.key);
-
-console.log(dec);
+console.log(MDE_Decrypt(data.enc, data.key));
