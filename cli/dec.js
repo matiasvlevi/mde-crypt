@@ -1,6 +1,6 @@
 const { readFile } = require('node:fs');
 const { Decrypt } = require('../src/index');
-const {get_or_create_key} = require('../src/keygen.js');
+const { get_or_create_key } = require('../src/keygen.js');
 
 function decrypt({
   enc_src, key_data
@@ -13,8 +13,7 @@ function decrypt({
     if (err) throw err;
     const dec = Decrypt(
       data,
-      key,
-      Math.sqrt(key.length)
+      key
     );
 
     console.log(`${dec.data}`);

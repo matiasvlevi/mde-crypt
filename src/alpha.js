@@ -4,7 +4,7 @@ function getRangeAscii(min, max) {
   }; return text;
 }
 const INVALID = "\xEF";
-const CHARS = " ";
+const CHARS = " \n|!@#$%^&*(){}[]:;\"\'.,<>/?";
 const ALPHA = INVALID + CHARS + getRangeAscii(65, 90) +
               getRangeAscii(97, 122) +
               getRangeAscii(48, 57);
@@ -23,17 +23,15 @@ function arr_to_ascii(arr) {
   return text;
 }
 
-function to_ascii(matrix) {
+function to_ascii(m) {
   let text = "";
-  matrix.matrix.forEach((row) => {
+  m.matrix.forEach((row) => {
     row.forEach((char) => {
       if (Math.round(char-1) >= ALPHA.length || Math.round(char-1) < 0) {
         text += ALPHA[Math.abs((Math.round(char)-1) % ALPHA.length)];
       } else {
         text += ALPHA[Math.round(char)-1];
       }
-
-    
     });
   })
   return text;

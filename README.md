@@ -1,36 +1,26 @@
 
+# Install
 
-### Encryption:
-
-```js
-const { MDE_Encrypt, MDE_Decrypt } = require('mde_crypt');
-
-let data = MDE_Encrypt("HELLO WORLD");
-
-console.log(data);
-/*
-
-{
-  enc: 'xxxx'
-  key: 'yyyy'  
-}
-
-*/
+```
+npm i -g mde_crypt
 ```
 
-### Decryption: 
+# CLI
 
-```js
-const { MDE_Encrypt, MDE_Decrypt } = require('mde_crypt');
+### Encrypt
 
-let data = MDE_Decrypt(enc, key);
 
-console.log(data);
-/*
+ex: encrypt `my_text.txt` with 8 by 8 matrices and output to `my_enc.mde`, read key from `key.txt` and generate a key if none found
 
-{
-  data: 'HELLO WORLD' 
-}
-
-*/
 ```
+mde enc -i my_text.txt -o my_enc.mde -k key.txt -s 8
+```
+
+### Decrypt
+
+decrypt `my_enc.mde` to stdout
+
+```
+mde dec -i my_enc.mde -k key.txt
+```
+

@@ -1,8 +1,33 @@
+const { Matrix } = require('dannjs');
+
+const Debug = require('./debug.js');
+
 
 function split2(arr) {
   let ans = [];
   for (let i = 0; i < arr.length; i+=2) {
     ans.push(arr[i] + arr[i+1]);
+  }
+  return ans;
+}
+
+function to_square_m(data, N) {
+
+  if (data.length > N*N) {
+    Debug.error("Wrong dimension array");
+    return;
+  }
+  
+  let ans = new Matrix(N, N);
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      if (i * N + j >= data.length) {
+          ans.matrix[i][j] = 0;
+      } else {
+        ans.matrix[i][j] = data[i * N + j];
+      }
+
+    }
   }
   return ans;
 }
@@ -54,5 +79,6 @@ module.exports = {
   to_buffer, from_buffer,
   dd,
   hex32,
-  split2
+  split2,
+  to_square_m
 }

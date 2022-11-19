@@ -1,33 +1,15 @@
 const { Matrix } = require('dannjs');
 
-const { to_buffer } = require('./utils.js');
+const { to_buffer, to_square_m } = require('./utils.js');
 const { ALPHA, to_ascii } = require('./alpha.js');
 
 const Debug = require('./debug.js');
 
-function to_square_m(data, N) {
-
-  if (data.length > N*N) {
-    Debug.error("Wrong dimension array");
-    return;
-  }
-  
-  let ans = new Matrix(N, N);
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < N; j++) {
-      if (i * N + j >= data.length) {
-          ans.matrix[i][j] = 0;
-      } else {
-        ans.matrix[i][j] = data[i * N + j];
-      }
-
-    }
-  }
-  return ans;
-}
 
 
-function MDE_Encrypt(data, key, key_size = 3) {
+
+function MDE_Encrypt(data, key) {
+  let key_size = key.length;
   let data_vector = [];
   for (let i = 0; i < data.length; i++) {
     data_vector.push(ALPHA.indexOf(data[i]));
@@ -78,7 +60,7 @@ function MDE_Encrypt(data, key, key_size = 3) {
   }) 
 
   return {
-    enc: to_buffer(enc_data),
+    data: to_buffer(enc_data),
     key: to_ascii(key_matrix)
   }
 }

@@ -8,12 +8,12 @@ function encrypt(config) {
 
   let key = get_or_create_key(config.key_data, config.key_size, true);
 
-  const data = Encrypt(config.raw_data, key, config.key_size); 
-  writeFileSync(config.enc_dest, data.enc);
-  writeFileSync(config.key_data, data.key);
+  const enc = Encrypt(config.raw_data, key, config.key_size); 
+  writeFileSync(config.enc_dest, enc.data);
+  writeFileSync(config.key_data, enc.key);
 
   console.log(
-    `${data.key}`
+    `${enc.key}`
   );
 }
 module.exports = { encrypt };

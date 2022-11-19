@@ -6,8 +6,7 @@ const { ALPHA, arr_to_ascii } = require('./alpha.js');
 
 const Debug = require('./debug.js');
 
-
-module.exports = function MDE_Decrypt(buf_data, key) {
+function MDE_Decrypt(buf_data, key) {
   const key_size = key.length;
 
   let data = from_buffer(buf_data);
@@ -62,3 +61,5 @@ module.exports = function MDE_Decrypt(buf_data, key) {
     data: arr_to_ascii(out),
   }
 }
+
+module.exports = { MDE_Decrypt };

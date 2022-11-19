@@ -90,7 +90,6 @@ const OPTIONS = {
 function replaceAll(text, segment, replacement) {
   let str = text;
   while(str.includes(segment)) {
-    console.log();
     str = str.replace(segment, replacement);
   }
   return str;
@@ -112,7 +111,6 @@ function parseOptions(_call) {
 
   }
 
-  console.log(config);
   return config;
 }
 

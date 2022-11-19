@@ -1,5 +1,5 @@
 class Debug {
-  static ENABLE = true;
+  static ENABLE = false;
   static error() {
     if (Debug.ENABLE) console.error(...arguments);
   }
