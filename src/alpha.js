@@ -3,13 +3,11 @@ function getRangeAscii(min, max) {
     text += String.fromCharCode(i);
   }; return text;
 }
-
+const INVALID = "\xEF";
 const CHARS = " ";
-const ALPHA = getRangeAscii(65, 90) +
+const ALPHA = INVALID + CHARS + getRangeAscii(65, 90) +
               getRangeAscii(97, 122) +
-              getRangeAscii(48, 57) + CHARS;
-
-
+              getRangeAscii(48, 57);
 
 function arr_to_ascii(arr) {
   let text = "";
@@ -29,12 +27,10 @@ function to_ascii(matrix) {
   let text = "";
   matrix.matrix.forEach((row) => {
     row.forEach((char) => {
-      if (Math.round(char) >= ALPHA.length || Math.round(char) < 0) {
-        text += ALPHA[Math.abs(Math.round(char) % ALPHA.length)];
-
-      if (ALPHA[Math.round(char)] === undefined) console.log(Math.round(char), char, Math.abs(Math.round(char) % 255))
+      if (Math.round(char-1) >= ALPHA.length || Math.round(char-1) < 0) {
+        text += ALPHA[Math.abs((Math.round(char)-1) % ALPHA.length)];
       } else {
-        text += ALPHA[Math.round(char)];
+        text += ALPHA[Math.round(char)-1];
       }
 
     

@@ -1,13 +1,14 @@
 const { Matrix } = require('dannjs');
 
 const { to_buffer } = require('./utils.js');
-const { ALPHA, CHARS, to_ascii } = require('./alpha.js');
+const { ALPHA, to_ascii } = require('./alpha.js');
 
+const Debug = require('./debug.js');
 
 function to_square_m(data, N) {
 
   if (data.length > N*N) {
-    console.log("Wrong dimension array");
+    Debug.error("Wrong dimension array");
     return;
   }
   
@@ -25,27 +26,22 @@ function to_square_m(data, N) {
   return ans;
 }
 
-function MDE_Encrypt(data, key_size = 3) {
+
+function MDE_Encrypt(data, key, key_size = 3) {
   let data_vector = [];
   for (let i = 0; i < data.length; i++) {
     data_vector.push(ALPHA.indexOf(data[i]));
   }
 
-  let key = [];
-  for (let i = 0; i < key_size; i++) {
-    key[i] = new Array(key_size).fill(0);
-    for (let j = 0; j < key_size; j++) {
-      key[i][j] = Math.floor(Math.random()*(ALPHA.length-CHARS.length));
-    }
-  }
-  
-
   let seg_count = Math.ceil(data.length / (key_size * key_size));
+
+  Debug.log('key', key);
 
   let data_matrices = [];
   for (let i = 0; i < data_vector.length; i+=(key_size*key_size)) {
     let data_matrix = new Matrix(key_size, key_size);
     let end_index =  i+(key_size*key_size);
+    
     data_matrix.set(
       to_square_m(data_vector.slice(
         i, (end_index >= data_vector.length) ? 
@@ -62,9 +58,13 @@ function MDE_Encrypt(data, key_size = 3) {
 
   let enc_matrices = [];
   for (let i = 0; i < seg_count; i++) {
+    let m = 
+     Matrix.mult(data_matrices[i], key_matrix);
+
     enc_matrices.push(
-     Matrix.mult(data_matrices[i], key_matrix).matrix
+      m.matrix
     );
+    Debug.log('Enc mat', i, enc_matrices[i]);
   }
 
   let enc_data = [];

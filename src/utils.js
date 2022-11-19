@@ -1,4 +1,3 @@
-const { to_ascii } = require('./alpha.js');
 
 function split2(arr) {
   let ans = [];
@@ -52,7 +51,6 @@ function to_buffer(values) {
 
 
 module.exports = {
-  to_ascii,
   to_buffer, from_buffer,
   dd,
   hex32,

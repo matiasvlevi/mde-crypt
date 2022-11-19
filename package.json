@@ -9,6 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bin": {
+    "mde": "./cli/index.js"
+  },
+  "preferGlobal":"true",
   "dependencies": {
     "dannjs": "^2.4.1-e",
     "mathjs": "^11.3.3"

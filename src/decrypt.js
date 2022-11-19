@@ -4,11 +4,16 @@ const { to_square_m } = require('./encrypt.js');
 const { from_buffer } = require('./utils.js');
 const { ALPHA, arr_to_ascii } = require('./alpha.js');
 
+const Debug = require('./debug.js');
+
 
 module.exports = function MDE_Decrypt(buf_data, key) {
-  const key_size = Math.sqrt(key.length);
+  const key_size = key.length;
 
   let data = from_buffer(buf_data);
+
+  Debug.log('Buffer input:', buf_data);
+  Debug.log('Buffer filtered:', data);
 
   let seg_count = Math.ceil(data.length / (key_size * key_size));
   let data_matrices = [];
@@ -27,17 +32,8 @@ module.exports = function MDE_Decrypt(buf_data, key) {
     data_matrices.push(data_matrix);
   }
 
-
-  let key_ = [];
-  for (let i = 0; i < key_size; i++) {
-    key_[i] = [];
-    for (let j = 0; j < key_size; j++) {
-      key_[i][j] = ALPHA.indexOf(key[i * key_size + j]);
-    }
-  }
-
   let key_matrix = new Matrix(key_size, key_size);  
-  key_matrix.set(inv(key_));
+  key_matrix.set(inv(key));
 
   let out_matrices = [];
 
@@ -45,6 +41,10 @@ module.exports = function MDE_Decrypt(buf_data, key) {
     let m = 
       Matrix.mult(data_matrices[i], key_matrix);
 
+    m.map(m => (Math.round(m) % ALPHA.length));
+
+    Debug.log('Data mat ', i, m.matrix);
+      
     let data_arr = [];
     m.matrix.forEach(r => {
       r.forEach(c => {
