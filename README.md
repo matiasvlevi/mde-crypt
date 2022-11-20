@@ -32,7 +32,7 @@ mde dec -i my_enc.mde -k key.txt
 
 # API
 
-the package need to be installed as a non-global `npm i mde_crypt`
+the package needs to be installed as a non-global `npm i mde_crypt`
 
 ### Encrypting
 
