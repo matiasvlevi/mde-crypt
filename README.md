@@ -48,12 +48,22 @@ console.log(encrypted);
 ### Decrypting
 
 ```js
-// Convert Ascii key to matrix key
-let key = MDE.Keygen.ascii_to_key(encrypted.key);
-
 // Decrypt
-const recovered = MDE.Decrypt(encrypted.data, key);
-
+const recovered = MDE.Decrypt(encrypted.data, encrypted.key);
 console.log(recovered);
+```
+
+### Usefull utils
+
+```js
+// Get key as a matrix
+const key_matrix =
+  MDE.Keygen.ascii_to_key_matrix("abcd");
+```
+
+```js
+// Get random ascii key N by N
+const key_matrix =
+  MDE.Keygen.random(2);
 ```
  
