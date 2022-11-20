@@ -1,5 +1,13 @@
 
-const MDE_Encrypt = require('./encrypt.js');
-const MDE_Decrypt = require('./decrypt.js');
+const { MDE_Encrypt } = require('./encrypt.js');
+const { MDE_Decrypt } = require('./decrypt.js');
 
-module.exports = { MDE_Decrypt, MDE_Encrypt };
+const Utils = require('./utils.js');
+const Keygen = require('./keygen.js');
+
+module.exports = { 
+  Decrypt: MDE_Decrypt,
+  Encrypt: MDE_Encrypt,
+  Keygen,
+  Utils
+};

@@ -1,9 +1,46 @@
-const { to_ascii } = require('./alpha.js');
+const { Matrix } = require('dannjs');
+
+const Debug = require('./debug.js');
+
+function unvalid_key(key_str) {
+  let n_length_mod = Math.sqrt(key_str.length) % 2;
+
+  if (
+    n_length_mod !== 1 &&
+    n_length_mod !== 0
+  ) {
+    Debug.error("Key must be a square length ex: 4, 9, 16, 25, 36 ...");
+    return true;
+  } 
+
+  return false;
+}
 
 function split2(arr) {
   let ans = [];
   for (let i = 0; i < arr.length; i+=2) {
     ans.push(arr[i] + arr[i+1]);
+  }
+  return ans;
+}
+
+function to_square_m(data, N) {
+
+  if (data.length > N*N) {
+    Debug.error("Wrong dimension array");
+    return;
+  }
+  
+  let ans = new Matrix(N, N);
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      if (i * N + j >= data.length) {
+          ans.matrix[i][j] = 0;
+      } else {
+        ans.matrix[i][j] = data[i * N + j];
+      }
+
+    }
   }
   return ans;
 }
@@ -52,9 +89,10 @@ function to_buffer(values) {
 
 
 module.exports = {
-  to_ascii,
   to_buffer, from_buffer,
   dd,
   hex32,
-  split2
+  split2,
+  to_square_m,
+  unvalid_key
 }
