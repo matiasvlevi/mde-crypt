@@ -11,6 +11,7 @@ This is a prototype planned to be implemented as a parallelised cuno module
 npm i -g mde_crypt
 ```
 
+
 # CLI
 
 ### Encrypt
@@ -29,6 +30,15 @@ decrypt `my_enc.mde` to stdout
 ```
 mde dec -i my_enc.mde -k key.txt
 ```
+
+
+### CLI Example
+
+An example is provided in `./example`,
+
+A 16KB (16384 characters) key is used to encrypt/decrypt a text `ants.txt` with 128 by 128 matrices
+
+<br/><br/>
 
 # API
 
