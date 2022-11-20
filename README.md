@@ -63,7 +63,7 @@ const key_matrix =
 
 ```js
 // Get random ascii key N by N
-const key_matrix =
+const ascii_key =
   MDE.Keygen.random(2);
 ```
  
