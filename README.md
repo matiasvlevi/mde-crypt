@@ -3,7 +3,7 @@
 Encrypt data with matrix dot product. 
 
 
-This is a prototype planned to be implemented as parrallelised into a cuno module
+This is a prototype planned to be implemented as a parallelised cuno module
 
 # Install
 
@@ -32,10 +32,12 @@ mde dec -i my_enc.mde -k key.txt
 
 # API
 
+the package need to be installed as a non-global `npm i mde_crypt`
+
 ### Encrypting
 
 ```js
-const MDE = require('../src/index');
+const MDE = require('mde_crypt');
 
 // Encrypt 'Hello World' String with a new random key
 const encrypted = MDE.Encrypt("Hello World", MDE.Keygen.random(3));
