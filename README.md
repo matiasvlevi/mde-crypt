@@ -53,7 +53,7 @@ const recovered = MDE.Decrypt(encrypted.data, encrypted.key);
 console.log(recovered);
 ```
 
-### Usefull utils
+### Useful utils
 
 ```js
 // Get key as a matrix
