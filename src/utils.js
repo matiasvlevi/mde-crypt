@@ -2,6 +2,19 @@ const { Matrix } = require('dannjs');
 
 const Debug = require('./debug.js');
 
+function unvalid_key(key_str) {
+  let n_length_mod = Math.sqrt(key_str.length) % 2;
+
+  if (
+    n_length_mod !== 1 &&
+    n_length_mod !== 0
+  ) {
+    Debug.error("Key must be a square length ex: 4, 9, 16, 25, 36 ...");
+    return true;
+  } 
+
+  return false;
+}
 
 function split2(arr) {
   let ans = [];
@@ -80,5 +93,6 @@ module.exports = {
   dd,
   hex32,
   split2,
-  to_square_m
+  to_square_m,
+  unvalid_key
 }

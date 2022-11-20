@@ -4,7 +4,7 @@ function getRangeAscii(min, max) {
   }; return text;
 }
 const INVALID = "\xEF";
-const CHARS = " \n|!@#$%^&*(){}[]:;\"\'.,<>/?";
+const CHARS = " \n|!@#$%^&*(){}[]:;\"\'.,<>/?-+=_~`";
 const ALPHA = INVALID + CHARS + getRangeAscii(65, 90) +
               getRangeAscii(97, 122) +
               getRangeAscii(48, 57);

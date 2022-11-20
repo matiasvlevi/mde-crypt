@@ -1,14 +1,23 @@
 const { Matrix } = require('dannjs');
-
-const { to_buffer, to_square_m } = require('./utils.js');
+const Keygen = require('./keygen.js');
+const { to_buffer, unvalid_key, to_square_m } = require('./utils.js');
 const { ALPHA, to_ascii } = require('./alpha.js');
 
 const Debug = require('./debug.js');
 
+function MDE_Encrypt(data, key_str) {
 
+  if (key_str !== undefined) {
+    if (unvalid_key(key_str)) {
+      key_str = Keygen.random(8);    
+    }
+  } else {
+   key_str = Keygen.random(8);
+  }
 
+  
+  key = Keygen.ascii_to_key_matrix(key_str);
 
-function MDE_Encrypt(data, key) {
   let key_size = key.length;
   let data_vector = [];
   for (let i = 0; i < data.length; i++) {

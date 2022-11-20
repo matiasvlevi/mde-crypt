@@ -1,13 +1,11 @@
-const { readFile } = require('node:fs');
+const { readFile, writeFileSync } = require('node:fs');
 const { Decrypt } = require('../src/index');
 const { get_or_create_key } = require('../src/keygen.js');
 
-function decrypt({
-  enc_src, key_data
-}) {
-  let source = enc_src || "encrypted_data.mde";
+function decrypt(config) {
+  let source = config.enc_src || "encrypted_data.mde";
     
-  let key = get_or_create_key(key_data);
+  let key = get_or_create_key(config.key_data);
 
   readFile(source, (err, data) => {
     if (err) throw err;
@@ -16,7 +14,11 @@ function decrypt({
       key
     );
 
-    console.log(`${dec.data}`);
+    if (config.dec_dest !== undefined) {
+      writeFileSync(config.dec_dest, dec.data);
+    } else {
+      console.log(`${dec.data}`);
+    }
   });
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { encrypt } = require('./enc.js');
 const { decrypt } = require('./dec.js');
-const {readFileSync} = require('node:fs');
+const {readFileSync, existsSync} = require('node:fs');
 
 function getArgs() {
   let raw_args = [...process.argv];
@@ -35,20 +35,29 @@ function get_option(first_char) {
 const CMDS = {
   'enc' : {
     main: (config) => {
+      
+      let data;
+      if (existsSync(config.input.value)) {
+        data = readFileSync(config.input.value, 'utf-8');
+      } else {
+        data = process.argv[3];
+      }
+      
       encrypt({
-        raw_data: readFileSync(config.input.value, 'utf-8'),
-        enc_dest: config.output.value || "enc.mde",
-        key_data: config.key.value,
-        key_size: (config.size) ? config.size.value : 6
+        raw_data: data,
+        enc_dest: (config.output) ? config.output.value : "enc.mde",
+        key_data: (config.key) ? config.key.value : undefined,
+        key_size: (config.size) ? +config.size.value : undefined
       });
     }
   },
   'dec': {
     main: (config) => {
       decrypt({
-        enc_src: config.input.value || "enc.mde",
-        key_data: config.key.value,
-        key_size: (config.size) ? config.size.value : 6
+        enc_src: (config.input) ? config.input.value : "enc.mde",
+        dec_dest: (config.output) ? config.output.value : undefined,
+        key_data: (config.key) ? config.key.value : "mde_key.txt",
+        key_size: (config.size) ? +config.size.value : 6
       });
     }
   },
@@ -101,7 +110,8 @@ function parseOptions(_call) {
     cmd: call.cmd
   };
 
-  while (call.args.length > 0) {
+  while (call.args.length >= 2) {
+
     let opt_pair = call.args.splice(0, 2);
     
     let opt_name = replaceAll(opt_pair[0], '-', '');
@@ -119,19 +129,9 @@ function execOptions(options) {
   CMDS[options.cmd].main(options);
 }
 
-
-execOptions(parseOptions(getArgs()));
-
-// if(process.argv[2] === "enc") {
-//   const config = {
-//     raw_data: process.argv[3] || "Matrix Encrypted Data",
-//     enc_dest: process.argv[4] || "encrypted_data.mde",
-//     key_size: process.argv[5] || 6 
-//   };
-//   encrypt(config);
-// } else if (process.argv[2] === "dec") {
-
-//   decrypt();
-// } 
-
+execOptions(
+  parseOptions(
+    getArgs()
+  )
+);
 

@@ -1,16 +1,29 @@
 const MDE = require('../src/index');
 
-const key = MDE.Keygen.random(3);
-const encrypted = MDE.Encrypt("Hello World", key);
+//
+//  Encrypt
+//
 
-console.log(encrypted);
+const encrypted = MDE.Encrypt("Hello World", "abcdedfgh");
+
+console.log('Encrypted output:' , encrypted);
+
+console.log(
+  'Key Matrix',
+  MDE.Keygen.ascii_to_key_matrix(encrypted.key)
+);
+
+//
+//  Decrypt
+//
 
 const recovered = MDE.Decrypt(
   encrypted.data,
-  MDE.Keygen.ascii_to_key(encrypted.key)
+  encrypted.key
 );
 
-console.log(recovered);
+console.log('Recovered from encrypted: ', recovered);
+
 
 
 

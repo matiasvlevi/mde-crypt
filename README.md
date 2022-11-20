@@ -1,3 +1,9 @@
+# mde_crypt
+
+Encrypt data with matrix dot product. 
+
+
+This is a prototype planned to be implemented as parrallelised into a cuno module
 
 # Install
 
@@ -31,11 +37,8 @@ mde dec -i my_enc.mde -k key.txt
 ```js
 const MDE = require('../src/index');
 
-// Generate a 3 by 3 matrix key
-const key = MDE.Keygen.random(3);
-
-// Encrypt 'Hello World' String with key
-const encrypted = MDE.Encrypt("Hello World", key);
+// Encrypt 'Hello World' String with a new random key
+const encrypted = MDE.Encrypt("Hello World", MDE.Keygen.random(3));
 
 console.log(encrypted);
 ```
