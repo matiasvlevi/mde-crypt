@@ -21,7 +21,7 @@ function nb_digits(val, offset) {
 function hex(val, int_size) {
   val &= 0xFFFFFFFF;
   let hex = val.toString(16).toUpperCase();
-  let str = (new Array(int_size).fill("00") + hex).slice(-int_size * 2);
+  let str = (new Array(int_size).fill("00").join('') + hex).slice(-int_size * 2);
   return str; 
 }
 
@@ -67,13 +67,13 @@ module.exports = {
   from_buffer: function(buf, map = (i, j, w) => (j * w + i)) {
     let ans = []; 
     let int_size = 255 - buf[buf.length-1];
-    let len = Math.floor(buf.length/int_size);
+    let len = Math.floor(buf.length / int_size);
 
-    for (let i  = 0; i < len; i++) {
+    for (let i  = 0; i < len; i++) { 
       let hex_value = "";
-      
+
       for (let j = 0; j < int_size; j++) {
-        hex_value += nb_digits(buf[map(i, j, len) ], 2);
+        hex_value += nb_digits(buf[map(i, j, len)], 2);
       }
 
       ans.push(parseInt(hex_value, 16));
@@ -83,7 +83,6 @@ module.exports = {
   },
   
   to_buffer: function(values, map = (i, j, w) => (j * w + i)) {
-
     let int_size = 4;
     let largest = 0;
 
@@ -98,20 +97,25 @@ module.exports = {
         int_size = i / 8; break;
       } 
     } 
+    
+    const used_values = [...values].filter(x => x != 0);
 
-    let ans = new Uint8Array(values.length * int_size + 1);
-   
-    for (let i = 0; i < values.length; i++) {
-      let int32_hex_str = split2(hex(values[i], int_size));
-      
+    let buf = new Uint8Array(
+      (used_values.length * int_size) + 1
+    );
+
+    let non_empty_bytelength = 0;
+    for (let i = 0; i < used_values.length; i++) {
+
+      let bytes = split2(hex(used_values[i], int_size));
       for (let j = 0; j < int_size; j++) {
-         
-        ans[map(i, j, values.length)] = parseInt(int32_hex_str[j], 16); 
+        non_empty_bytelength++;
+        buf[map(i, j, used_values.length)] = parseInt(bytes[j], 16);
       }
-
     }
-    ans[ans.length-1] = 255 - int_size;
-    return Buffer.from(ans);
+
+    buf[buf.length-1] = 255 - int_size;
+    return Buffer.from(buf);
   }
   
 }

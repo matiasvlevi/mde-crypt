@@ -1,6 +1,6 @@
 class Debug {
   static ERROR_ENABLE = true;
-  static ENABLE = true;
+  static ENABLE = false;
   static error() {
     if (Debug.ERROR_ENABLE) {
       
