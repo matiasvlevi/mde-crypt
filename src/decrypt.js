@@ -1,20 +1,23 @@
 const { Matrix } = require('dannjs');
-const { inv } = require('mathjs');
+const { inv, det } = require('mathjs');
 const { to_square_m } = require('./encrypt.js');
-const { from_buffer, unvalid_key } = require('./utils.js');
+const { from_buffer, unvalid_key, BUFFER_MAP } = require('./utils.js');
 const { ALPHA, arr_to_ascii } = require('./alpha.js');
 const Keygen = require('./keygen.js');
 
 const Debug = require('./debug.js');
 
 function MDE_Decrypt(buf_data, key_str) {
-  if (unvalid_key(key_str)) return;
 
-  const key = Keygen.ascii_to_key_matrix(key_str);
+  const key = Keygen.keycode_to_key_matrix(
+    Keygen.from_keycode_to_uintarr(key_str || "")
+  );
+
+  if (unvalid_key(key_str)) return;
 
   const key_size = key.length;
 
-  let data = from_buffer(buf_data);
+  let data = from_buffer(buf_data, BUFFER_MAP);
 
   Debug.log('Buffer input:', buf_data);
   Debug.log('Buffer filtered:', data);
@@ -37,15 +40,16 @@ function MDE_Decrypt(buf_data, key_str) {
   }
 
   let key_matrix = new Matrix(key_size, key_size);  
+
   key_matrix.set(inv(key));
 
   let out_matrices = [];
-
+  Debug.log('key_matrix', key, 'inv_key', key_matrix.matrix)
   for (let i = 0; i < seg_count; i++) {
     let m = 
       Matrix.mult(data_matrices[i], key_matrix);
 
-    m.map(m => (Math.round(m) % ALPHA.length));
+    m.map(m => (Math.round(m) % ALPHA.length)); // HAD A MODULO % ALPHA.length
 
     Debug.log('Data mat ', i, m.matrix);
       

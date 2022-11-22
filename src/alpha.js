@@ -1,21 +1,19 @@
-function getRangeAscii(min, max) {
+function get_range_ascii(min, max) {
   let text = ""; for (let i = min; i <= max; i++) {
     text += String.fromCharCode(i);
   }; return text;
 }
-const INVALID = "\xEF";
-const CHARS = " \n|!@#$%^&*(){}[]:;\"\'.,<>/?-+=_~`";
-const ALPHA = INVALID + CHARS + getRangeAscii(65, 90) +
-              getRangeAscii(97, 122) +
-              getRangeAscii(48, 57);
+const ALPHA = get_range_ascii(0, 127);
 
-function arr_to_ascii(arr) {
+
+
+function arr_to_ascii(arr, table = ALPHA) {
   let text = "";
 
   arr.forEach((char) => {
      
-    if (ALPHA[Math.round(char)] !== undefined && Math.round(char) !== 0) {
-      text += ALPHA[Math.round(char)];
+    if (table[Math.round(char)] !== undefined && Math.round(char) !== 0) {
+      text += table[Math.round(char)];
     }
 
   });
@@ -23,18 +21,18 @@ function arr_to_ascii(arr) {
   return text;
 }
 
-function to_ascii(m) {
+function to_ascii(m, table = ALPHA) {
   let text = "";
   m.matrix.forEach((row) => {
     row.forEach((char) => {
-      if (Math.round(char-1) >= ALPHA.length || Math.round(char-1) < 0) {
-        text += ALPHA[Math.abs((Math.round(char)-1) % ALPHA.length)];
+      if (Math.round(char-1) >= table.length || Math.round(char-1) < 0) {
+        text += table[Math.abs((Math.round(char)-1) % table.length)];
       } else {
-        text += ALPHA[Math.round(char)-1];
+        text += table[Math.round(char)-1];
       }
     });
   })
   return text;
 }
 
-module.exports = { ALPHA, CHARS, to_ascii, arr_to_ascii };
+module.exports = { ALPHA, to_ascii, arr_to_ascii, get_range_ascii };

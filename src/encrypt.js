@@ -1,7 +1,7 @@
 const { Matrix } = require('dannjs');
 const Keygen = require('./keygen.js');
-const { to_buffer, unvalid_key, to_square_m } = require('./utils.js');
-const { ALPHA, to_ascii } = require('./alpha.js');
+const { to_buffer, unvalid_key, to_square_m, BUFFER_MAP } = require('./utils.js');
+const { to_ascii, ALPHA } = require('./alpha.js');
 
 const Debug = require('./debug.js');
 
@@ -15,8 +15,9 @@ function MDE_Encrypt(data, key_str) {
    key_str = Keygen.random(8);
   }
 
-  
-  key = Keygen.ascii_to_key_matrix(key_str);
+  const key = Keygen.keycode_to_key_matrix(
+    Keygen.from_keycode_to_uintarr(key_str)
+  );
 
   let key_size = key.length;
   let data_vector = [];
@@ -69,8 +70,8 @@ function MDE_Encrypt(data, key_str) {
   }) 
 
   return {
-    data: to_buffer(enc_data),
-    key: to_ascii(key_matrix)
+    data: to_buffer(enc_data, BUFFER_MAP),
+    key: key_str
   }
 }
 

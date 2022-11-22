@@ -1,8 +1,12 @@
 class Debug {
   static ERROR_ENABLE = true;
-  static ENABLE = false;
+  static ENABLE = true;
   static error() {
-    if (Debug.ERROR_ENABLE) console.error(...arguments);
+    if (Debug.ERROR_ENABLE) {
+      
+      console.error(...arguments)
+      console.trace();
+    };
   }
   static log() {
     if (Debug.ENABLE) console.log(...arguments);
