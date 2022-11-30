@@ -4,9 +4,7 @@ const MDE = require('../src/index');
 //
 //  Encrypt
 //
-
 const encrypted = MDE.Encrypt("Hello world", MDE.Keygen.random(3));
-console.log('encrypted data bytes: ', new Uint8Array(encrypted.data))
 
 
 
